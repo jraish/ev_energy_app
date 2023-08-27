@@ -1,26 +1,66 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import '../App.css';
+import axios, { AxiosResponse, AxiosError } from 'axios';
+import { UserLocation, ChargePoint } from '../types';
+import ChargePointList from '../components/ChargePointList';
 
-function App() {
+function LandingPage() {
+  const [userLoc, setUserLoc] = useState<UserLocation | null>(null)
+  const [chargePoints, setChargePoints] = useState<Array<ChargePoint> | null>(null)
+  
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.permissions
+        .query({ name: "geolocation" })
+        .then(function (result) {
+          switch (result.state) {
+            case "granted":
+            case "prompt":
+              navigator.geolocation.getCurrentPosition(
+                (position: GeolocationPosition) => setUserLoc({ lat: position.coords.latitude, lon: position.coords.longitude }),
+                (error: GeolocationPositionError) => console.log(error)
+              );
+              break;
+            case "denied":
+              console.log('shit')
+          }
+        });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      if (userLoc) {
+        try {
+          const params = {
+            key: process.env.REACT_APP_API_KEY,
+            distance: 10,
+            latitude: userLoc.lat,
+            longitude: userLoc.lon
+          }
+          const response: AxiosResponse<any> = await axios.get('https://api.openchargemap.io/v3/poi', { params })
+          setChargePoints(response.data)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    }
+    if (userLoc) {
+      getData()
+    }
+
+    return () => {
+      setChargePoints(null);
+    };
+  }, [userLoc]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {chargePoints ? <ChargePointList {...chargePoints} /> : <p> shit </p>}
     </div>
   );
 }
 
-export default App;
+export default LandingPage;
