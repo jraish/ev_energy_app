@@ -3,6 +3,12 @@ interface UserLocation {
     lon: number;
 }
 
+interface AlertProps {
+    title: string;
+    message: string;
+    severity: 'error' | 'info' | 'success' | 'warning';
+    closeFunction: () => void; 
+}
 
 const exampleChargePoint = {
         "DataProvider": {
@@ -140,7 +146,14 @@ const exampleChargePoint = {
 
 type ChargePoint = typeof exampleChargePoint;
 
+interface ChargePointListProps {
+    chargePointList: Array<ChargePoint>;
+    onSelect: (chargePointID: number) => void;
+}
+
 export type {
     UserLocation,
-    ChargePoint
+    ChargePoint,
+    AlertProps,
+    ChargePointListProps
 }

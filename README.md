@@ -31,8 +31,9 @@ That should do it!
 
 Note: If this were a real live app, this obviously isn't how I'd do this. In a production app the frontend would communicate with a server that had that API key injected as a secret at build time using whatever pipeline tool you want to use.
 
-# Style Guide
-## (Visual style, not code style)
+# Things to add
 
-This app uses the Material UI component library, because its components are pretty and also because home rolling CSS can make very complicated and hard to maintain layout logic. I'm not married to Material UI, but I _do_ think it's a good idea to have a library of styled components so that the CSS can be tested to death once and then abstracted away forever.
+If I were building this app for production, here are a few changes I'd make:
+- Styling. More Styling. Lots of styling. This UI works, but it doesn't look very smooth yet, and I'd like to fix that.
+- 
 
