@@ -33,7 +33,10 @@ Note: If this were a real live app, this obviously isn't how I'd do this. In a p
 
 # Things to add
 
-If I were building this app for production, here are a few changes I'd make:
+If I were building this app for production over more time, here are a few changes I'd make:
 - Styling. More Styling. Lots of styling. This UI works, but it doesn't look very smooth yet, and I'd like to fix that.
-- 
+- I'd like to abstract away a lot of the pieces into separate components. The Alert, for example, and how the items are displayed inside the accordion - I'd normally want each component to be its own file for ease of maintenance. Similarly...
+- I'd like to nest the components in more layout structures. Right now there's a little styling to make it legible, but it's hard to maintain the visual structure without doing more to build up the display elements.
+- Testing! Normally I'd want a bunch of unit tests.
+- Finally, I'd probably want to move some of the transitions into a state management tool, like a `useReducer` hook or something. That way transitions could be handled a little more smoothly - for example, the ChargePointList could be hidden while data is being retrieved and loaded. It would also provide some clear hooks for handling errors, rather than just using `catch` blocks.
 
